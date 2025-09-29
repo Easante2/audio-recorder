@@ -7,12 +7,15 @@ let timerInterval;
 const startButton = document.getElementById("startRecord");
 const stopButton = document.getElementById("stopRecord");
 const audioPlayback = document.getElementById("audioPlayback");
-const downloadLink = document.getElementById("downloadLink");
 const submitButton = document.getElementById("submitRecording");
 const timestamp = document.getElementById("timestamp");
 const recordingTime = document.getElementById("recordingTime");
 const nameInput = document.getElementById("nameInput");
 const emailInput = document.getElementById("emailInput");
+const audioPlaybackSection = document.querySelector('.mt-6'); // Get the audio preview section
+
+// Hide the audio preview section by default
+audioPlaybackSection.classList.add('hidden');
 
 function getReadableTimestamp() {
   const now = new Date();
@@ -79,11 +82,7 @@ startButton.addEventListener("click", async () => {
       audioURL = URL.createObjectURL(audioBlob);
 
       audioPlayback.src = audioURL;
-
-      const recordedAt = new Date(startTime).toISOString().replace(/:/g, "-");
-      downloadLink.href = audioURL;
-      downloadLink.download = `recording_${recordedAt}.mp4`;
-      downloadLink.classList.remove("hidden");
+      audioPlaybackSection.classList.remove('hidden'); // Show the audio preview section
       submitButton.classList.remove("hidden");
 
       audioChunks = [];
