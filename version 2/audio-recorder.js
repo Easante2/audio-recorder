@@ -14,8 +14,14 @@ const nameInput = document.getElementById("nameInput");
 const emailInput = document.getElementById("emailInput");
 const audioPlaybackSection = document.querySelector('.mt-6'); // Get the audio preview section
 
-// Hide the audio preview section by default
-audioPlaybackSection.classList.add('hidden');
+// Initialize UI state
+document.addEventListener('DOMContentLoaded', () => {
+  // Hide the audio preview section by default
+  audioPlaybackSection.classList.add('hidden');
+  // Disable stop button by default
+  stopButton.disabled = true;
+  stopButton.classList.add("opacity-50", "cursor-not-allowed");
+});
 
 function getReadableTimestamp() {
   const now = new Date();
@@ -176,8 +182,17 @@ submitButton.addEventListener('click', async (e) => {
     alert(result);
 
     if (res.ok) {
+      // Clear form inputs before reloading
+      nameInput.value = '';
+      emailInput.value = '';
+      audioPlaybackSection.classList.add('hidden');
+      submitButton.classList.add('hidden');
+      
+      // Small timeout to ensure UI updates before reload
+      setTimeout(() => {
         location.reload();
-      }
+      }, 100);
+    }
     
   } catch (error) {
     console.error("Error submitting recording:", error);
